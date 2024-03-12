@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Menu from '../components/Menu';
 
 export default function Header() {
     const [tasks, setTasks] = useState([]);
@@ -12,6 +13,7 @@ export default function Header() {
 
     return (
         <div className='flex flex-col justify-center text-center w-full mt-5 h-full'>
+            <Menu/>
             <input ref={inputEl} type="text" name="nameTask" className='mb-5 bg-gray-100 border border-gray-300 w-60 text-center mx-auto' />
             <button onClick={getNameTask} className='btn bg-cyan-500 hover:bg-cyan-600 text-white p-3 w-60 text-center mx-auto'>Add Task</button>
             {tasks.map((task, index) => (

@@ -1,35 +1,49 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Menu from '../components/Menu';
 
 export default function Header() {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(() => {
+        const storedTasks = localStorage.getItem('tasks');
+        return storedTasks ? JSON.parse(storedTasks) : [];
+    });
     const inputEl = useRef(null);
     const inputElStartTime = useRef(null);
     const inputElEndTime = useRef(null);
-    const [editIndex, setEditIndex] = useState(-1); // Индекс задачи, которую мы редактируем
+    const [editIndex, setEditIndex] = useState(-1);
+
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
 
     function addTask() {
         const taskName = inputEl.current.value.trim();
         const taskStartTime = inputElStartTime.current.value.trim();
         const taskEndTime = inputElEndTime.current.value.trim();
         const taskFull =  taskName + " выполнить с: " + taskStartTime + " до: " + taskEndTime;
-        setTasks(prevTasks => [...prevTasks, taskFull]);
-        inputEl.current.value = ''; // очищаем поле ввода после добавления задачи
+        const newTasks = [...tasks, taskFull];
+        setTasks(newTasks);
+        saveTasksToLocalStorage(newTasks);
+        inputEl.current.value = '';
     }
 
     function deleteTask(index) {
-        setTasks(prevTasks => prevTasks.filter((_, i) => i !== index));
+        const newTasks = tasks.filter((_, i) => i !== index);
+        setTasks(newTasks);
+        saveTasksToLocalStorage(newTasks);
     }
+    
 
     function startEditing(index) {
         setEditIndex(index);
     }
-
+    function saveTasksToLocalStorage(tasks) {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
     function endEditing(index, newValue) {
         const newTasks = [...tasks];
         newTasks[index] = newValue;
         setTasks(newTasks);
-        // setEditIndex(-1); // Завершаем редактирование
+        saveTasksToLocalStorage(newTasks);
     }
     function finishEditing() {
         setEditIndex(-1);

@@ -24,6 +24,8 @@ export default function Header() {
         setTasks(newTasks);
         saveTasksToLocalStorage(newTasks);
         inputEl.current.value = '';
+        // taskStartTime.current.value = null;
+        // taskEndTime.current.value = null;
     }
 
     function deleteTask(index) {
@@ -52,29 +54,36 @@ export default function Header() {
         <div className='flex flex-col justify-center text-center w-full mt-5 h-full'>
             <Menu/>
             <span>Текст задачи </span>
-            <input ref={inputEl} type="text" name="startTimeTask" className='mb-5 bg-gray-100 border border-gray-300 w-60 text-center mx-auto' />
+            <textarea ref={inputEl} name="taskDescription" className='mb-5 bg-gray-100 border border-gray-300 w-60 text-center mx-auto'></textarea>
             <span>Время начала: </span>
             <input ref={inputElStartTime} type="time" name="endTimeTask" className='mb-5 bg-gray-100 border border-gray-300 w-60 text-center mx-auto' />
             <span>Время конца: </span>
             <input ref={inputElEndTime} type="time" name="nameTask" className='mb-5 bg-gray-100 border border-gray-300 w-60 text-center mx-auto' />
             <button onClick={addTask} className='btn bg-cyan-500 hover:bg-cyan-600 text-white p-3 w-60 text-center mx-auto'>Добавить задачу</button>
-            <ol className="list-decimal text-start mx-auto mt-5">
+            <ol className="list-decimal text-start mx-auto mt-5 w-1/3">
             {tasks.map((task, index) => (
-                <li key={index}> {index === editIndex ? (
+                <li className='mx-auto ' key={index}> 
+                    <div className="flex flex-col mx-auto w-full">
+                    {index === editIndex ? (
                     <input
                         type="text"
-                        className='mb-5 bg-gray-100 border border-gray-300 w-60 text-center mx-auto '
+                        className='mb-5 bg-gray-100 border border-gray-300 text-center w-full'
                         value={task}
                         onChange={(e) => endEditing(index, e.target.value)}
                         onBlur={()=> finishEditing()}
                     />
                 ) : (
                     <>
-                        {task}
-                        <button className="btn bg-yellow-300 pt-1 pb-1 pl-3 pr-3 m-1 text-black rounded-sm" onClick={() => startEditing(index)}>Edit</button>
+                        <label>
+                            
+                            <span className='text-center font-semibold'>{task}</span> 
+                            <input type="checkbox" className='w-5 h-5 mt-1 ml-2'/>
+                        </label>
+                        <button className="w-full btn bg-yellow-300 pt-1 pb-1 pl-3 pr-3 m-1 text-black rounded-sm" onClick={() => startEditing(index)}>Edit</button>
                     </>
                 )}
                 <button className="btn bg-blue-600 pt-1 pb-1 pl-3 pr-3 m-1 text-white rounded-sm" onClick={() => deleteTask(index)}>Delete</button>
+                    </div> 
                 </li>
             ))}
             </ol>

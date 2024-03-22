@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
-import FormCreateTask from './components/FormCreateTask';
-import TaskSection from './components/TasksSection';
-import { Outlet } from 'react-router-dom';
-import Header from './components/Header';
+import React, { useEffect, useState } from 'react'
+import FormCreateTask from '../components/FormCreateTask'
+import TaskSection from '../components/TasksSection'
 
-export default function App() {
-  const [tasks, setTasks] = useState<string[][]>([]);
+const HomePage = () => {
+    const [tasks, setTasks] = useState<string[][]>([]);
 
   function onSaveTask(task: string, endTime: string) {
     const updatedTasks = [...tasks, [task, endTime]];
@@ -25,12 +23,12 @@ export default function App() {
       setTasks(JSON.parse(storedData));
     }
   }, []);
-
   return (
-    <main className='flex flex-col w-full justify-center text-center '>
-      <Header />
-      {/* <FormCreateTask onSaveTask={onSaveTask} />
-      <TaskSection tasks={tasks} onDeleteTask={onDeleteTask} /> */}
-    </main>
-  );
+    <div>
+        <FormCreateTask onSaveTask={onSaveTask} />
+      <TaskSection tasks={tasks} onDeleteTask={onDeleteTask} />
+    </div>
+  )
 }
+
+export default HomePage

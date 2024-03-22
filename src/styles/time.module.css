@@ -1,0 +1,5 @@
+.timepicker::before {
+    content: 'Дедлайн:';
+    margin-right: .6em;
+    color: #9d9d9d;
+ }
